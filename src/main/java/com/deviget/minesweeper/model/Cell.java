@@ -7,7 +7,7 @@ import java.util.List;
 public class Cell implements Serializable {
 
     private boolean mine = false;
-    private boolean visible = false;
+    private boolean revealed = false;
 
     private Cell upperLeft;
     private Cell left;
@@ -18,9 +18,11 @@ public class Cell implements Serializable {
     private Cell right;
     private Cell bottomRight;
 
-    private List<Cell> adjacent = new ArrayList<>();
+    private List<Cell> adjacentCells = new ArrayList<>();
+    private Integer adjacentMinesCount;
+    private boolean flag = false;
 
-    public boolean getMine() {
+    public boolean isMine() {
         return mine;
     }
 
@@ -28,55 +30,87 @@ public class Cell implements Serializable {
         this.mine = mine;
     }
 
-    public int getAdjacentMines() {
-        return (int) adjacent.stream().filter(Cell::getMine).count();
+    public int getAdjacentMinesCount() {
+        if (adjacentMinesCount == null) {
+            adjacentMinesCount = (int) adjacentCells.stream().filter(Cell::isMine).count();
+        }
+        return adjacentMinesCount;
     }
 
     public void setUpperLeft(Cell upperLeft) {
         this.upperLeft = upperLeft;
-        adjacent.add(upperLeft);
+        adjacentCells.add(upperLeft);
     }
 
     public void setLeft(Cell left) {
         this.left = left;
-        adjacent.add(left);
+        adjacentCells.add(left);
     }
 
     public void setBottomLeft(Cell bottomLeft) {
         this.bottomLeft = bottomLeft;
-        adjacent.add(bottomLeft);
+        adjacentCells.add(bottomLeft);
     }
 
     public void setUpper(Cell upper) {
         this.upper = upper;
-        adjacent.add(upper);
+        adjacentCells.add(upper);
     }
 
     public void setBottom(Cell bottom) {
         this.bottom = bottom;
-        adjacent.add(bottom);
+        adjacentCells.add(bottom);
     }
 
     public void setUpperRight(Cell upperRight) {
         this.upperRight = upperRight;
-        adjacent.add(upperRight);
+        adjacentCells.add(upperRight);
     }
 
     public void setRight(Cell right) {
         this.right = right;
-        adjacent.add(right);
+        adjacentCells.add(right);
     }
 
     public void setBottomRight(Cell bottomRight) {
         this.bottomRight = bottomRight;
-        adjacent.add(bottomRight);
+        adjacentCells.add(bottomRight);
     }
 
-    public boolean isVisible() {
-        return visible;
+    public boolean isRevealed() {
+        return revealed;
     }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
+    public void setRevealed(boolean revealed) {
+        this.revealed = revealed;
+    }
+
+    public boolean reveal() {
+        this.setRevealed(true);
+        if (mine) {
+            return true;
+        } else {
+            if (getAdjacentMinesCount() == 0) {
+                adjacentCells.stream().forEach(Cell::revealAdjacent);
+            }
+            return false;
+        }
+    }
+
+    private void revealAdjacent() {
+        if (!mine && !revealed) {
+            this.setRevealed(true);
+            if (getAdjacentMinesCount() == 0) {
+                adjacentCells.stream().forEach(Cell::revealAdjacent);
+            }
+        }
+    }
+
+    public void toggleFlag() {
+        flag = !flag;
+    }
+
+    public boolean isFlag() {
+        return flag;
     }
 }

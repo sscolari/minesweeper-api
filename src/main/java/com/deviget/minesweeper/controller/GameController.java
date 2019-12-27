@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/game")
+@CrossOrigin
 public class GameController {
 
     @Autowired
@@ -22,6 +23,16 @@ public class GameController {
     @RequestMapping("/{id}")
     public Board getGame(@PathVariable String id) {
         return gameService.getGame(id);
+    }
+
+    @RequestMapping("/{id}/reveal/{x}/{y}")
+    public Board reveal(@PathVariable String id, @PathVariable Integer x, @PathVariable Integer y) {
+        return gameService.reveal(id, x, y);
+    }
+
+    @RequestMapping("/{id}/flag/{x}/{y}")
+    public Board flag(@PathVariable String id, @PathVariable Integer x, @PathVariable Integer y) {
+        return gameService.flag(id, x, y);
     }
 
 }

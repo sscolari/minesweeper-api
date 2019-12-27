@@ -9,10 +9,14 @@ public class Board implements Serializable {
 
     private final String id;
     private final Cell[][] cells;
+    private final int mines;
+    private boolean lost = false;
+    private boolean endGame = false;
 
     public Board(String id, Integer rows, Integer cols, Integer mines) {
         this.id = id;
         cells = new Cell[rows][cols];
+        this.mines = mines;
         initializeCells();
         initializeMines(rows, cols, mines);
         initializeAdjacentCells(rows, cols);
@@ -66,7 +70,7 @@ public class Board implements Serializable {
         while (currentMines < mines && attempts < MAX_ATTEMPTS) {
             int x = random.nextInt(rows);
             int y = random.nextInt(cols);
-            if (!cells[x][y].getMine()) {
+            if (!cells[x][y].isMine()) {
                 cells[x][y].setMine(true);
                 currentMines++;
             }
@@ -82,11 +86,11 @@ public class Board implements Serializable {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[0].length; col++) {
                 Cell cell = cells[row][col];
-                if (cell.isVisible()) {
-                    if (cell.getMine()) {
+                if (cell.isRevealed()) {
+                    if (cell.isMine()) {
                         System.out.print("X ");
                     } else {
-                        System.out.print(cell.getAdjacentMines() + " ");
+                        System.out.print(cell.getAdjacentMinesCount() + " ");
                     }
                 } else {
                     System.out.print("# ");
@@ -102,5 +106,43 @@ public class Board implements Serializable {
 
     public Cell[][] getCells() {
         return cells;
+    }
+
+    public boolean isLost() {
+        return lost;
+    }
+
+    public void reveal(Integer x, Integer y) {
+        Cell currentCell = cells[x][y];
+        boolean mine = currentCell.reveal();
+        if (mine) {
+            lost = true;
+        }
+        calculateEndGame();
+    }
+
+    public void toggleFlag(Integer x, Integer y) {
+        Cell currentCell = cells[x][y];
+        currentCell.toggleFlag();
+    }
+
+    public void calculateEndGame() {
+        if (lost) {
+            endGame = true;
+            return;
+        }
+        for (int row = 0; row < cells.length; row++) {
+            for (int col = 0; col < cells[0].length; col++) {
+                if (!cells[row][col].isRevealed() && !cells[row][col].isMine()) {
+                    endGame = false;
+                    return;
+                }
+            }
+        }
+        endGame = true;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
     }
 }
