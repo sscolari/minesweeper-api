@@ -124,6 +124,7 @@ public class Board implements Serializable {
     public void toggleFlag(Integer x, Integer y) {
         Cell currentCell = cells[x][y];
         currentCell.toggleFlag();
+        calculateEndGame();
     }
 
     public void calculateEndGame() {
@@ -131,15 +132,23 @@ public class Board implements Serializable {
             endGame = true;
             return;
         }
+        int flags = 0;
+        boolean hasHiddenCells = false;
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[0].length; col++) {
+                if (cells[row][col].isFlag() && cells[row][col].isMine()) {
+                    flags++;
+                }
                 if (!cells[row][col].isRevealed() && !cells[row][col].isMine()) {
-                    endGame = false;
-                    return;
+                    hasHiddenCells = true;
                 }
             }
         }
-        endGame = true;
+        if (flags != 0 && flags == mines) {
+            endGame = true;
+            return;
+        }
+        endGame = !hasHiddenCells;
     }
 
     public boolean isEndGame() {

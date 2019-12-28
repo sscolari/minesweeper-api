@@ -17,7 +17,7 @@ $(document).on("click", ".cell.hidden", function() {
     });
 });
 
-$(document).on("contextmenu", ".cell.hidden", function(e) {
+$(document).on("contextmenu", ".cell.hidden, .cell.flag", function(e) {
     e.preventDefault();
     $.ajax({
       url: "http://localhost:8080/game/" + gameId + "/flag/" + $(this).data("x") + "/" + $(this).data("y"),

@@ -1,9 +1,10 @@
-body {
-    background-color: #DDDDDD;
-}
 
 td {
     border: 1px solid;
+}
+
+.board table {
+    margin: auto;
 }
 
 .cell {
