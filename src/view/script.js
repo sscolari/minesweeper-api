@@ -40,7 +40,7 @@ function printBoard(rows, lost, endGame) {
     rows.forEach(function (cols, x) {
         content += "<tr>";
         cols.forEach(function (cell, y) {
-            if (!cell.revealed && !lost) {
+            if (!cell.revealed && !endGame) {
                 if (cell.flag) {
                     content += "<td class='cell flag' data-x="+ x +" data-y="+ y +"> ?";
                 } else {
@@ -48,7 +48,11 @@ function printBoard(rows, lost, endGame) {
                 }
             } else {
                 if (cell.mine) {
-                    content += "<td class='cell mine'> <img src='bomb.png'>";
+                    if (!cell.flag) {
+                        content += "<td class='cell mine error'> <img src='bomb.png'>";
+                    } else {
+                        content += "<td class='cell mine correct'> <img src='bomb.png'>";
+                    }
                 } else {
                     content += "<td class='cell revealed'>";
                     if (cell.adjacentMinesCount == 0) {
@@ -67,9 +71,11 @@ function printBoard(rows, lost, endGame) {
 
     if (endGame) {
         if (lost) {
-            alert("You loose");
+            $(".result").text("You loose");
+            $(".result").addClass("lost");
         } else {
-            alert("You won!")
+            $(".result").text("You won!");
+            $(".result").addClass("win");
         }
     }
 

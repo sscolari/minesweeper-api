@@ -16,12 +16,20 @@ td {
 }
 
 .cell.flag {
-    background: orange;
+    background: #F4D03F;
+}
+
+.cell.mine.correct {
+    background: GREEN;
+}
+
+.cell.mine.error {
+    background: red;
 }
 
 .cell.hidden {
     cursor: pointer;
-    background: blue;
+    background: #CCD1D1;
 }
 
 .cell.mine {
@@ -31,9 +39,20 @@ td {
 }
 .cell.mine img {
     width: 30px;
-    margin-bottom: -5px;
+    margin-bottom: 3px;
 }
 
 .cell.revealed {
-    background: green;
+    background: #02C4BE;
+}
+
+.result {
+    text-align: center;
+}
+.result.lost {
+    color: red;
+}
+
+.result.win {
+    color: green;
 }
