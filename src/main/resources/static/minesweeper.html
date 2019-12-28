@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Minesweeper by Santiago Scolari</title>
+
+    <link href="style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body>
+<div class="controls">
+    <div class="newGame">
+        <div>Rows <input id="rows" value="10"></div>
+        <div>Cols <input id="cols" value="10"></div>
+        <div>Mines <input id="mines" value="10"></div>
+        <div><button id="newGameButton">New game</button></div>
+        <div id="newGameError" style="display: none" class="error">Game not found</div>
+    </div>
+    <div class="loadGame">
+        Load game: <input id="gameIdInput"><button id="loadGameById">Load game</button>
+        <div id="gameNotFound" style="display: none">Game not found</div>
+    </div>
+</div>
+
+<div class="game">
+    <div>Current game ID is <span id="gameId" class="gameId"></span></div>
+    <div id="board" class="board"></div>
+    <div id="error" style="display: none" class="error">Error calling server</div>
+    <h1 class="result"></h1>
+</div>
+
+
+</body>
+</html>

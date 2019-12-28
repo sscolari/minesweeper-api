@@ -1,29 +1,54 @@
-
+var endpoint = "http://localhost:8080/minesweeper"
 var gameId;
 
-$.ajax({
-  url: "http://localhost:8080/game/new?rows=10&cols=10",
-  cache: false
-}).done(function( response ) {
-  processResponse(response);
-});
-
-$(document).on("click", ".cell.hidden", function() {
+$(document).on("click", "#newGameButton", function() {
+    $("#newGameError").hide();
+    $(".result").hide();
     $.ajax({
-      url: "http://localhost:8080/game/" + gameId + "/reveal/" + $(this).data("x") + "/" + $(this).data("y"),
-      cache: false
+      url: endpoint + "/game",
+      method: "POST",
+      data: "{\"rows\":\""+$("#rows").val()+"\", \"cols\":\""+$("#cols").val()+"\", \"mines\":\""+$("#mines").val()+"\"}",
+      contentType:"application/json; charset=utf-8",
+      dataType:"json",
+      cache: false,
     }).done(function( response ) {
       processResponse(response);
+    }).fail(function(response) {
+        $("#newGameError").html(response.responseJSON.message);
+        $("#newGameError").show();
+    });
+})
+
+$(document).on("click", ".cell.hidden", function() {
+    $("#error").hide();
+    $.ajax({
+        url: endpoint + "/game/" + gameId + "/reveal/",
+        method: "PUT",
+        data: "{\"x\":\""+$(this).data("x")+"\", \"y\":\""+$(this).data("y")+"\"}",
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        cache: false,
+    }).done(function( response ) {
+        processResponse(response);
+    }).fail(function(response) {
+        $("#error").show();
     });
 });
 
 $(document).on("contextmenu", ".cell.hidden, .cell.flag", function(e) {
     e.preventDefault();
+    $("#error").hide();
     $.ajax({
-      url: "http://localhost:8080/game/" + gameId + "/flag/" + $(this).data("x") + "/" + $(this).data("y"),
-      cache: false
+        url: endpoint + "/game/" + gameId + "/flag/",
+        method: "PUT",
+        data: "{\"x\":\""+$(this).data("x")+"\", \"y\":\""+$(this).data("y")+"\"}",
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        cache: false,
     }).done(function( response ) {
-      processResponse(response);
+        processResponse(response);
+    }).fail(function(response) {
+        $("#error").show();
     });
     return false;
 });
@@ -71,12 +96,25 @@ function printBoard(rows, lost, endGame) {
 
     if (endGame) {
         if (lost) {
-            $(".result").text("You loose");
+            $(".result").text("You lose");
             $(".result").addClass("lost");
         } else {
-            $(".result").text("You won!");
+            $(".result").text("You win!");
             $(".result").addClass("win");
         }
+        $(".result").show();
     }
-
 }
+
+$(document).on("click", "#loadGameById", function() {
+    $("#gameNotFound").hide();
+    $(".result").hide();
+    $.ajax({
+      url: endpoint + "/game/" + $("#gameIdInput").val(),
+      cache: false
+    }).done(function( response ) {
+      processResponse(response);
+    }).fail(function(response) {
+        $("#gameNotFound").show();
+    });
+});

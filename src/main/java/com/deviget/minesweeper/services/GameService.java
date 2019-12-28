@@ -1,10 +1,11 @@
 package com.deviget.minesweeper.services;
 
 import com.deviget.minesweeper.model.Board;
-import com.deviget.minesweeper.model.Cell;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class GameService {
@@ -24,16 +25,26 @@ public class GameService {
 
     public Board reveal(String id, Integer x, Integer y) {
         Board board = games.get(id);
-        board.reveal(x, y);
+        if (board == null) {
+            return null;
+        }
+        boolean result = board.reveal(x, y);
+        if (result == false) {
+            throw new IllegalArgumentException("Invalid coordinates " + x + ", " + y);
+        }
         board.calculateEndGame();
-        board.print();
         return board;
     }
 
     public Board flag(String id, Integer x, Integer y) {
         Board board = games.get(id);
-        board.toggleFlag(x, y);
-        board.print();
+        if (board == null) {
+            return null;
+        }
+        boolean result = board.toggleFlag(x, y);
+        if (result == false) {
+            throw new IllegalArgumentException("Invalid coordinates " + x + ", " + y);
+        }
         return board;
     }
 }

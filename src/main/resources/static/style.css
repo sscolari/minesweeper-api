@@ -56,3 +56,42 @@ td {
 .result.win {
     color: green;
 }
+
+.gameId {
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+
+.controls {
+    float: left;
+}
+
+.newGame {
+    border: 1px solid;
+    width: 200px;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+.loadGame {
+    border: 1px solid;
+    width: 200px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.game {
+    border: 1px solid;
+    margin: 10px;
+    padding: 10px;
+    overflow: auto;
+}
+
+button {
+    margin-top: 10px !important;
+}

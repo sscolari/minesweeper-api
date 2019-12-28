@@ -20,7 +20,6 @@ public class Board implements Serializable {
         initializeCells();
         initializeMines(rows, cols, mines);
         initializeAdjacentCells(rows, cols);
-        print();
     }
 
     private void initializeCells() {
@@ -82,24 +81,6 @@ public class Board implements Serializable {
 
     }
 
-    public void print() {
-        for (int row = 0; row < cells.length; row++) {
-            for (int col = 0; col < cells[0].length; col++) {
-                Cell cell = cells[row][col];
-                if (cell.isRevealed()) {
-                    if (cell.isMine()) {
-                        System.out.print("X ");
-                    } else {
-                        System.out.print(cell.getAdjacentMinesCount() + " ");
-                    }
-                } else {
-                    System.out.print("# ");
-                }
-            }
-            System.out.println(" ");
-        }
-    }
-
     public String getId() {
         return id;
     }
@@ -112,19 +93,27 @@ public class Board implements Serializable {
         return lost;
     }
 
-    public void reveal(Integer x, Integer y) {
+    public boolean reveal(Integer x, Integer y) {
+        if (x > cells.length || y > cells[0].length) {
+            return false;
+        }
         Cell currentCell = cells[x][y];
         boolean mine = currentCell.reveal();
         if (mine) {
             lost = true;
         }
         calculateEndGame();
+        return true;
     }
 
-    public void toggleFlag(Integer x, Integer y) {
+    public boolean toggleFlag(Integer x, Integer y) {
+        if (x > cells.length || y > cells[0].length) {
+            return false;
+        }
         Cell currentCell = cells[x][y];
         currentCell.toggleFlag();
         calculateEndGame();
+        return true;
     }
 
     public void calculateEndGame() {
