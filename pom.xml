@@ -53,7 +53,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.mypackage.MyClass</mainClass>
+                            <mainClass>com.deviget.minesweeper.MinesweeperApiApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
