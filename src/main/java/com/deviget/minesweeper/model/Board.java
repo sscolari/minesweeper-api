@@ -12,6 +12,8 @@ public class Board implements Serializable {
     private final int mines;
     private boolean lost = false;
     private boolean endGame = false;
+    private long startTime;
+    private long endTime;
 
     public Board(String id, Integer rows, Integer cols, Integer mines) {
         this.id = id;
@@ -94,6 +96,9 @@ public class Board implements Serializable {
     }
 
     public boolean reveal(Integer x, Integer y) {
+        if (endGame)  {
+            return false;
+        }
         if (x > cells.length || y > cells[0].length) {
             return false;
         }
@@ -107,6 +112,9 @@ public class Board implements Serializable {
     }
 
     public boolean toggleFlag(Integer x, Integer y) {
+        if (endGame)  {
+            return false;
+        }
         if (x > cells.length || y > cells[0].length) {
             return false;
         }
@@ -119,6 +127,7 @@ public class Board implements Serializable {
     public void calculateEndGame() {
         if (lost) {
             endGame = true;
+            endTime = System.currentTimeMillis();
             return;
         }
         int flags = 0;
@@ -135,12 +144,27 @@ public class Board implements Serializable {
         }
         if (flags != 0 && flags == mines) {
             endGame = true;
-            return;
+        } else {
+            endGame = !hasHiddenCells;
         }
-        endGame = !hasHiddenCells;
+        if (endGame) {
+            endTime = System.currentTimeMillis();
+        }
     }
 
     public boolean isEndGame() {
         return endGame;
     }
+
+    public void startGame() {
+        startTime = System.currentTimeMillis();
+    }
+
+    public long getTime() {
+        if (endTime == 0) {
+            return 0;
+        }
+        return endTime - startTime;
+    }
+
 }

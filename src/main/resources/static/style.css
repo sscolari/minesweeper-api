@@ -3,9 +3,6 @@ td {
     border: 1px solid;
 }
 
-.board table {
-    margin: auto;
-}
 
 .cell {
     width: 35px;
@@ -46,9 +43,6 @@ td {
     background: #02C4BE;
 }
 
-.result {
-    text-align: center;
-}
 .result.lost {
     color: red;
 }
@@ -64,7 +58,6 @@ td {
 .error {
     color: red;
     font-weight: bold;
-    text-align: center;
 }
 
 .controls {
@@ -86,9 +79,7 @@ td {
 }
 
 .game {
-    border: 1px solid;
     margin: 10px;
-    padding: 10px;
     overflow: auto;
 }
 

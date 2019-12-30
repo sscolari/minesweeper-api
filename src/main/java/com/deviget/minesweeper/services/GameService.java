@@ -15,6 +15,7 @@ public class GameService {
     public Board newGame(Integer rows, Integer cols, Integer mines) {
         String id = UUID.randomUUID().toString();
         Board board = new Board(id, rows, cols, mines);
+        board.startGame();
         games.put(id, board);
         return board;
     }
@@ -30,7 +31,7 @@ public class GameService {
         }
         boolean result = board.reveal(x, y);
         if (result == false) {
-            throw new IllegalArgumentException("Invalid coordinates " + x + ", " + y);
+            throw new IllegalArgumentException("Invalid action");
         }
         board.calculateEndGame();
         return board;
@@ -43,7 +44,7 @@ public class GameService {
         }
         boolean result = board.toggleFlag(x, y);
         if (result == false) {
-            throw new IllegalArgumentException("Invalid coordinates " + x + ", " + y);
+            throw new IllegalArgumentException("Invalid action");
         }
         return board;
     }

@@ -1,4 +1,4 @@
-var endpoint = "http://localhost:8080/minesweeper"
+var endpoint = "./minesweeper"
 var gameId;
 
 $(document).on("click", "#newGameButton", function() {
@@ -56,10 +56,10 @@ $(document).on("contextmenu", ".cell.hidden, .cell.flag", function(e) {
 function processResponse(response){
     gameId = response.id;
     $("#gameId").html(gameId);
-    printBoard(response.cells, response.lost, response.endGame);
+    printBoard(response.cells, response.lost, response.endGame, response.time);
 }
 
-function printBoard(rows, lost, endGame) {
+function printBoard(rows, lost, endGame, time) {
     const board = $('#board');
     var content = "<table>";
     rows.forEach(function (cols, x) {
@@ -102,6 +102,12 @@ function printBoard(rows, lost, endGame) {
             $(".result").text("You win!");
             $(".result").addClass("win");
         }
+        var d = new Date(time);
+        $("#time").text("Time: "
+            + ((d.getUTCHours() > 0) ? (d.getUTCHours() + ' hours, ') : "")
+            + ((d.getUTCMinutes() > 0) ? (d.getUTCMinutes() + ' minutes, ') : "")
+            + d.getUTCSeconds() + " seconds");
+        $("#time").show();
         $(".result").show();
     }
 }
